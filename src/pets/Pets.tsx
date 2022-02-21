@@ -32,6 +32,11 @@ export default function Pets(props: RouteComponentProps) {
     props.history.push("/editPet")
   }
 
+  const lossPetClick = (petId: string) => {
+    props.history.push("/pet/" + petId + "/loss")
+  }
+
+
   useEffect(() => {
     void loadCurrentPets()
   }, [])
@@ -45,6 +50,7 @@ export default function Pets(props: RouteComponentProps) {
             <th> Nombre </th>
             <th> Descripción </th>
             <th> </th>
+            <th> </th>
           </tr>
         </thead>
         <tbody>
@@ -55,9 +61,18 @@ export default function Pets(props: RouteComponentProps) {
                 <td>{pet.description}</td>
                 <td className="text">
                   <img
+                    title="Editar"
                     src="/assets/edit.png"
                     alt=""
                     onClick={() => editPetClick(pet.id)}
+                  />
+                </td>
+                <td className="text">
+                <img
+                    title="Avisos de pérdida"
+                    src="/assets/loss.png"
+                    alt=""
+                    onClick={() => lossPetClick(pet.id)}
                   />
                 </td>
               </tr>
