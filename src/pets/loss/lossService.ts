@@ -50,7 +50,13 @@ export async function update(petId: string, id: string, payload: {
     phone: string
     state: string
 }): Promise<Loss> {
-    return (await axios.put(`${environment.backendUrl}v1/pet/${petId}/loss/${id}`,payload)).data as Loss
+    return (await axios.put(`${environment.backendUrl}/v1/pet/${petId}/loss/${id}`,payload)).data as Loss
+}   
+
+
+export async function findPet(petId: string, id: string): Promise<Loss> {
+    const payload={state: 'FIND'}
+    return (await axios.put(`${environment.backendUrl}/v1/pet/${petId}/loss/${id}`,payload)).data as Loss
 }   
 
 

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react"
 import { useErrorHandler } from "../../common/utils/ErrorHandler"
 import { goHome } from "../../common/utils/Tools"
 import "../../styles.css"
-import { getLoss, update } from "./lossService"
+import { newLoss, getLosses, getLoss, update,loadLoss } from "./lossService"
 import DangerLabel from "../../common/components/DangerLabel"
-import FormInput from "../../common/components/FormInput"
+import FormInputReadOnly from "../../common/components/FormInputReadOnly"
 import FormButtonBar from "../../common/components/FormButtonBar"
 import FormAcceptButton from "../../common/components/FormAcceptButton"
 import FormButton from "../../common/components/FormButton"
@@ -15,77 +15,45 @@ import GlobalContent from "../../common/components/GlobalContent"
 import { RouteComponentProps } from "react-router-dom"
 
 
-export default function Loss(props: RouteComponentProps<{ petId: string, id:string }>) {
-    const pathname = props.location.pathname.split('/')
-    const petIdAux = pathname[2]
-  
+export default function LossView(props: RouteComponentProps<{id:string }>) {
     const [lossId, setLossId] = useState("")
     const [description, setDescription] = useState("")
     const [date, setDate] = useState("")
     const [phone, setPhone] = useState("")
-    const [picture, setPicture] = useState("")
     const [state, setState] = useState("")
-    
+    const [picture, setPicture] = useState("")
+
     const errorHandler = useErrorHandler()
   
-    const getLossById = async (id: string) => {
-    
+    const loadLossById = async (id: string) => {
         try {
-          const result = await getLoss(petIdAux,id)
-          console.log(result)
+          const result = await loadLoss(id)
           setLossId(result.id)
           setDescription(result.description)
           setDate(result.date)
           setPhone(result.phone)
           setPicture(result.picture)
-      
+  
+
         } catch (error) {
-          console.log("todo mal")
           errorHandler.processRestValidations(error)
         }
-    
     }
 
-    const saveClick = async () => {
-      errorHandler.cleanRestValidations()
-      if (!description) {
-        errorHandler.addError("description", "No puede estar vacío")
-      }
-      if (!date) {
-        errorHandler.addError("date", "La fecha no puede estar vacio")
-      }
-      if (!phone) {
-        errorHandler.addError("phone", "No puede estar vacío")
-      }
-      if (errorHandler.hasErrors()) {
-        return
-      }
-
-      try {
-        console.log('aca toy')
-       const result = await update(petIdAux,props.match.params.id,{description, date, picture,phone,state})
-       
-       console.log(result)
-
-       props.history.goBack()
-      } catch (error) {
-      
-        errorHandler.processRestValidations(error)
-      }
-    }
   
     useEffect(() => {
       const id = props.match.params.id
-      void getLossById(id)
+      void loadLossById(id)
+    
     }, [])
   
     return (
       <GlobalContent>
-        <FormTitle>Editar Aviso de Pérdida</FormTitle>
+        <FormTitle>Aviso de Perdida</FormTitle>
   
     
         <Form>  
-          <FormInput
+          <FormInputReadOnly
             label="Descripción"
             name="description"
             value={description}
@@ -93,7 +61,7 @@ export default function Loss(props: RouteComponentProps<{ petId: string, id:stri
             errorHandler={errorHandler}
           />
   
-          <FormInput
+          <FormInputReadOnly
             label="Fecha de Perdida"
             name="date"
             value={date}
@@ -101,7 +69,7 @@ export default function Loss(props: RouteComponentProps<{ petId: string, id:stri
             errorHandler={errorHandler}
           />
 
-        <FormInput
+        <FormInputReadOnly
             label="Telefono"
             name="phone"
             value={phone}
@@ -111,12 +79,8 @@ export default function Loss(props: RouteComponentProps<{ petId: string, id:stri
   
           <DangerLabel message={errorHandler.errorMessage} />
   
-          <FormButtonBar>
-            <FormAcceptButton label="Actualizar" onClick={saveClick} />
-  
-            
-  
-            <FormButton label="Cancelar" onClick={props.history.goBack}  />
+          <FormButtonBar>          
+            <FormButton label="Volver" onClick={props.history.goBack} />
           </FormButtonBar>
         </Form>
       </GlobalContent>

@@ -25,12 +25,8 @@ export default function Losses(props: RouteComponentProps) {
       }
     }
   
-   /* const editPetClick = (petId: string) => {
-      props.history.push("/editPet/" + petId)
-    }*/
-  
-    const newLossClick = () => {
-     // props.history.push("/editPet")
+    const lossViewClick = (id: string, ) => {
+      props.history.push("/lossView/" + id)
     }
   
     useEffect(() => {
@@ -57,11 +53,12 @@ export default function Losses(props: RouteComponentProps) {
                   <td>{loss.date}</td>
                   <td>{loss.state}</td>
                   <td className="text">
-                    <img
-                      src="/assets/edit.png"
-                      alt=""
-                     // onClick={() => editPetClick(pet.id)}
-                    />
+                  <img
+                    title="Ver detalles"
+                    src="/assets/iconsearch.png"
+                    alt=""
+                    onClick={() => lossViewClick(loss.id)}
+                  />
                   </td>
                 </tr>
               )

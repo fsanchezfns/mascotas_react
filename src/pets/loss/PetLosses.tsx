@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { getLosses, Loss } from "./lossService"
+import { getLosses, Loss,findPet } from "./lossService"
 import "../../styles.css"
 import { useErrorHandler } from "../../common/utils/ErrorHandler"
 import { goHome } from "../../common/utils/Tools"
@@ -40,6 +40,20 @@ export default function PetLosses(props: RouteComponentProps<{ id: string }>) {
     
     props.history.push("/pet/" + petId + "/editloss/" + lossId)
   }
+
+  const lossFindClick = async(petId:string, lossId: string, ) => {
+
+    try {
+     const result = await findPet(petId,lossId)
+     console.log(result)
+
+     props.history.goBack()
+    }catch (error) {
+      
+      errorHandler.processRestValidations(error)
+    }
+  }
+
 
 
   function isEdit(state:string){
@@ -91,7 +105,7 @@ export default function PetLosses(props: RouteComponentProps<{ id: string }>) {
                     title="Encontre mi mascota"
                     src="/assets/iconfind.png"
                     alt=""
-                    onClick={() => lossEditClick(props.match.params.id,loss.id)}
+                    onClick={() => lossFindClick(props.match.params.id,loss.id)}
                   />
                 </td>
                 <td className="text">

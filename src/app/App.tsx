@@ -5,6 +5,7 @@ import Info from "../info/Info"
 import NewPet from "../pets/NewPet"
 import Pets from "../pets/Pets"
 import Losses from "../pets/loss/Losses" 
+import LossView from "../pets/loss/LossView" 
 import PetLossView from "../pets/loss/PetLossView" 
 import PetLosses from "../pets/loss/PetLosses" 
 import PetLoss from "../pets/loss/PetLoss" 
@@ -44,13 +45,12 @@ export default function App() {
               <LoggedInRoute path="/pets" component={Pets} />
               <LoggedInRoute path="/editPet" component={NewPet} />
               <LoggedInRoute path="/editPet/:id" component={NewPet} />
+
+
               <LoggedInRoute path="/losses" component={Losses} />
-             
+              <LoggedInRoute path="/lossView/:id" component={LossView} />
+            
               
-              
-              
-
-
 
               <LoggedInRoute path="/pet/:id/loss" component={PetLosses} />
               <LoggedInRoute path="/pet/:id/newloss" component={PetLoss} />
